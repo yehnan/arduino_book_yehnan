@@ -6,7 +6,7 @@
 #define DEBOUNCE_DELAY 200 // milliseconds
 
 volatile boolean led_status;
-volatile unsigned long time_previous;
+unsigned long time_previous;
 
 void switchChanged(){
   unsigned long time_current = millis();

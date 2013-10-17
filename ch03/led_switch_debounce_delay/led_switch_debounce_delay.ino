@@ -20,7 +20,7 @@ void updateLed(){
   if((time_current - time_previous) > DEBOUNCE_DELAY){
     time_previous = time_current;
   
-    led_status = led_status == HIGH ? LOW : HIGH;
+    led_status = !led_status;
     digitalWrite(LED_PIN, led_status);
     Serial.println(led_status);
   }
