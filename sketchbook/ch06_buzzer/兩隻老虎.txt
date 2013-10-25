@@ -1,0 +1,14 @@
+int melody[] = {
+  NOTE_C4, NOTE_D4, NOTE_E4, NOTE_C4, NOTE_C4, NOTE_D4, NOTE_E4, NOTE_C4, 
+  NOTE_E4, NOTE_F4, NOTE_G4, NOTE_E4, NOTE_F4, NOTE_G4, 
+  NOTE_G4, NOTE_A4, NOTE_G4, NOTE_F4, NOTE_E4, NOTE_C4,
+  NOTE_G4, NOTE_A4, NOTE_G4, NOTE_F4, NOTE_E4, NOTE_C4,
+  NOTE_C4, NOTE_G3, NOTE_C4, NOTE_C4, NOTE_G3, NOTE_C4, 
+};
+int noteDurations[] = {
+  8, 8, 8, 8, 8, 8, 8, 8,
+  8, 8, 4, 8, 8, 4,
+  16, 16, 16, 16, 8, 8,
+  16, 16, 16, 16, 8, 8,
+  8, 8, 4, 8, 8, 4,
+};
