@@ -3,8 +3,7 @@
 // IRremote needs specific pin to send IR signals
 // Uno uses 3, Leonardo uses 13, more in IRremoteInt.h
 IRsend irsend;
-void setup()
-{
+void setup() {
   Serial.begin(SERIAL_BAUDRATE);
 }
 void loop() {
