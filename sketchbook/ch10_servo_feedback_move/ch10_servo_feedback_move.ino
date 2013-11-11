@@ -2,12 +2,8 @@
 #define SERIAL_BAUDRATE 19200
 #define SERVO_PIN 9
 #define FEEDBACK_PIN A0
+#define FEEDBACK_TOLERANCE 3
 
-Servo s; // 建立Servo物件
-void setup() {
-  Serial.begin(SERIAL_BAUDRATE);
-  s.attach(SERVO_PIN); // 連接伺服馬達，開始輸出脈衝訊號
-}
 void pf(const char *fmt, ... ){
     char tmp[128]; // 最多128個字元，含NULL
     va_list args;
@@ -16,8 +12,16 @@ void pf(const char *fmt, ... ){
     va_end(args);
     Serial.print(tmp);
 }
-// 假設角度與回饋值呈線性關係
-void loop() {
+
+Servo s; // 建立Servo物件
+int feedbackMin; // 最大回饋值
+int pwMin; // 最長脈衝寬度
+int feedbackMax; // 最小回饋值
+int pwMax; // 最短脈衝寬度
+int fbs[19]; // 記錄角度0、10、20、...、180的回饋值
+
+// 找出pwMin與pwMax
+void findPulseWidth(){ // 假設角度與回饋值呈線性關係
   int fb80, fb90, fb100; // fb是feedback回饋的縮寫
   // 先取得角度80、90、100的回饋值，作為參考
   s.write(90);
@@ -32,7 +36,7 @@ void loop() {
   
   // 逐步加大轉動角度，檢查回饋值是否符合比例
   // 找出最大可達角度
-  int feedbackMax = fb100;
+  feedbackMax = fb100;
   int angleMax = 100;
   pf("degree 90, feedback %d\n", fb90);
   pf("degree 100, feedback %d\n", fb100);
@@ -55,7 +59,7 @@ void loop() {
   
   // 逐步減小轉動角度，檢查回饋值是否符合比例
   // 找出最小可達角度
-  int feedbackMin = fb80;
+  feedbackMin = fb80;
   int angleMin = 80;
   pf("degree 90, feedback %d\n", fb90);
   pf("degree 80, feedback %d\n", fb80);
@@ -77,10 +81,58 @@ void loop() {
   pf("min degree %d, feedback %d\n", angleMin, feedbackMin);
   
   // 推算出可行脈衝寬度的上下限
-  int pwMin = float(angleMin) / 180 * (MAX_PULSE_WIDTH-MIN_PULSE_WIDTH) + MIN_PULSE_WIDTH;
-  int pwMax = float(angleMax) / 180 * (MAX_PULSE_WIDTH-MIN_PULSE_WIDTH) + MIN_PULSE_WIDTH;
+  pwMin = float(angleMin) / 180 
+    * (MAX_PULSE_WIDTH-MIN_PULSE_WIDTH) 
+    + MIN_PULSE_WIDTH;
+  pwMax = float(angleMax) / 180 
+    * (MAX_PULSE_WIDTH-MIN_PULSE_WIDTH) 
+    + MIN_PULSE_WIDTH;
   pf("min pulse width is %d, max pulse width is %d\n", pwMin, pwMax);
-
-  delay(3000);
+}
+void setup() {
+  Serial.begin(SERIAL_BAUDRATE);
+  s.attach(SERVO_PIN);
+  // 先使用Servo程式庫預設的脈衝寬度上下限
+  findPulseWidth(); // 找出此伺服馬達可允許的範圍
+  s.detach();
+  s.attach(SERVO_PIN, pwMin, pwMax); // 重新連接
+  for(int i = 0; i <= 18; i+=1){ // 記錄角度0~180的回饋值
+    s.write(i * 10); // 以10度為間隔
+    delay(300);
+    fbs[i] = analogRead(FEEDBACK_PIN);
+    pf("degree %d, feedback %d\n", i*10, fbs[i]);
+  }
+}
+// 移動到指定的位置（角度，0~180），然後才回傳
+void moveTo(int angle){
+  s.write(angle);
+  int i = angle / 10;
+  int fb = map(angle, i*10, (i+1)*10, fbs[i], fbs[i+1]);
+  while(abs(analogRead(FEEDBACK_PIN) - fb) > FEEDBACK_TOLERANCE){
+    // 直到回饋值與預想的回饋值相差少於誤差容忍範圍內
+    // 然後才跳出迴圈，回傳
+  }
+}
+// 回傳現在的位置（角度），0~180
+int getAngle(){
+  int fb = analogRead(FEEDBACK_PIN); // 根據回饋值，推算出角度
+  int i;
+  for(i = 1; i <= 18; i++){
+    if(fb < fbs[i]){
+      break;
+    }
+  }
+  return map(fb, fbs[i-1], fbs[i], (i-1)*10, i*10);
+}
+void loop() { // 讓馬達轉過來轉過去，不使用delay函式
+  int i;
+  for(i = 0; i <= 180; i += 10){
+    moveTo(i);
+    pf("after moveTo(%d), angle is %d\n", i, getAngle());
+  }
+  for(i = 170; i > 0; i -= 10){
+    moveTo(i);
+    pf("after moveTo(%d), angle is %d\n", i, getAngle());
+  }
 }
 
