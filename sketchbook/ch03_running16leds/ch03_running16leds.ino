@@ -8,7 +8,6 @@ void setup() {
   pinMode(LATCH_PIN, OUTPUT);
   pinMode(CLOCK_PIN, OUTPUT);
 }
-
 void loop() {
   int i;
   unsigned int data;

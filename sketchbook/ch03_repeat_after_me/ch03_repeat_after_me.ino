@@ -1,14 +1,16 @@
 #define SERIAL_BAUDRATE 19200
-#define NUMBER 5
+#define NUMBER 5 // 5個LED、5個按壓開關
+// 將連接腳位儲存在陣列裡
 const int switches[NUMBER] = {11, 9, 7, 5, 3};
 const int leds[NUMBER] = {12, 10, 8, 6, 4};
 
-#define Q_MAX 8
-int questions[Q_MAX];
-int answers[Q_MAX];
+#define Q_MAX 8 // 出題的最多個數
+int questions[Q_MAX]; // 題目
+int answers[Q_MAX]; // 答案
 int q_num;
 int answer_num;
 
+// 狀態機的可能狀態
 typedef enum{
   STATE_START,
   STATE_QUESTION,
@@ -34,7 +36,7 @@ void setup() {
   answer_num = 0;
 }
 
-boolean checkAnswers(){
+boolean checkAnswers(){ // 檢查答案對不對
   for(int i = 0; i < q_num; i++){
     if(questions[i] != answers[i]){
       return false;

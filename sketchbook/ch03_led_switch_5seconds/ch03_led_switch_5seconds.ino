@@ -1,12 +1,13 @@
 #include <Bounce.h>
+#define SERIAL_BAUDRATE 19200
 #define LED_PIN 11
 #define SWITCH_PIN 7
-#define SERIAL_BAUDRATE 19200
 #define DEBOUNCE_DELAY 50 // milliseconds
 #define DURATION 5000 // milliseconds
 
 Bounce bouncer = Bounce(SWITCH_PIN, DEBOUNCE_DELAY);
 
+// 定義狀態機的可能狀態
 typedef enum{
   S_OFF,
   S_OFF_NO_PRESS,
@@ -27,7 +28,6 @@ void updateLed(){
     Serial.print(state);
   }
 }
-
 void setup() {
   Serial.begin(SERIAL_BAUDRATE);
   pinMode(LED_PIN, OUTPUT);
@@ -40,6 +40,7 @@ void loop() {
   bouncer.update();
   boolean switch_status = bouncer.read();
   
+  // 以switch述句根據狀態作相對應的動作
   switch(state){
     case S_OFF:
       if(switch_status == LOW){
@@ -76,7 +77,7 @@ void loop() {
       }
     break;
   }
-  
+  // 前面更新狀態state後，接下來只要根據state更新LED即可
   updateLed();
 }
 
