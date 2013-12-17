@@ -1,3 +1,4 @@
+// 七段顯示器每一段連接的腳位定義
 #define SEG_E_PIN 7
 #define SEG_D_PIN 6
 #define SEG_C_PIN 5
@@ -7,13 +8,14 @@
 #define SEG_F_PIN 9
 #define SEG_G_PIN 8
 
-#define SEG_TOTAL 8
+#define SEG_TOTAL 8 // 總共八段（包含小數點）
 int pins[SEG_TOTAL] = {
   SEG_A_PIN, SEG_B_PIN, SEG_C_PIN, SEG_D_PIN,
   SEG_E_PIN, SEG_F_PIN, SEG_G_PIN, SEG_DP_PIN
 };
 
-#define NUMBER_TOTAL 10
+#define NUMBER_TOTAL 10 // 10個數字，0、1、2、...、8、9
+// 以二維陣列存放數字與每一段的亮滅對應關係
 boolean numbers[NUMBER_TOTAL][SEG_TOTAL] = {
   // A, B, C, D, E, F, G, DP
   {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, LOW, LOW}, // 0
@@ -28,6 +30,8 @@ boolean numbers[NUMBER_TOTAL][SEG_TOTAL] = {
   {HIGH, HIGH, HIGH, HIGH, LOW, HIGH, HIGH, LOW}, // 9
 };
 
+// 參數n是想要顯示的數字
+// 參數dp代表要不要點亮小數點
 void displayNumber(int n, boolean dp){
   if(n < 0 || 9 < n)
     return;
@@ -37,13 +41,11 @@ void displayNumber(int n, boolean dp){
   }
   digitalWrite(SEG_DP_PIN, dp);
 }
-
-void displayNothing(){
+void displayNothing(){ // 七段顯示器全部熄滅
   for(int i = 0; i < SEG_TOTAL; i++){
     digitalWrite(pins[i], LOW);
   }
 }
-
 void setup() {
   int i;
   for(i = 0; i < SEG_TOTAL; i++){

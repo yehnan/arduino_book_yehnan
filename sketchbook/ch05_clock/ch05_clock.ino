@@ -12,8 +12,8 @@
 #define G_PIN A0
 #define DP_PIN 5
 
-#define POS_TOTAL 4
-#define SEG_TOTAL 8
+#define POS_TOTAL 4 // 四個位數
+#define SEG_TOTAL 8 // 共8段
 int pos_pins[POS_TOTAL] = {POS1_PIN, POS2_PIN, POS3_PIN, POS4_PIN};
 int seg_pins[SEG_TOTAL] = {A_PIN, B_PIN, C_PIN, D_PIN, E_PIN, F_PIN, G_PIN, DP_PIN};
 

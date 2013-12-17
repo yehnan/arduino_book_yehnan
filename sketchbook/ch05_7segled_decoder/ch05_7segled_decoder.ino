@@ -1,3 +1,4 @@
+// 4511解碼器連接的腳位
 #define DA_PIN 2
 #define DB_PIN 5
 #define DC_PIN 4
@@ -13,10 +14,8 @@ void displayNumber(int n){
   
   for(int i = 0; i < PIN_TOTAL; i++){
     digitalWrite(pins[i], (n >> i) & 0x01);
-    
   }
 }
-
 void setup() {
   for(int i = 0; i < PIN_TOTAL; i++){
     pinMode(pins[i], OUTPUT);   
@@ -24,7 +23,7 @@ void setup() {
 }
 void loop() {
   int x;
-  for(x = 0; x <= 9; x++){
+  for(x = 0; x <= 9; x++){ // 顯示數字0~9
     displayNumber(x);
     delay(1000);
   }

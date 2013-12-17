@@ -1,7 +1,6 @@
-#include <Wire.h> // I2C
+#include <Wire.h> // I2C程式庫的標頭檔
 #include <Time.h>  
 #include <DS1307RTC.h>
-
 #define SERIAL_BAUDRATE 19200
 #define POS1_PIN A1
 #define POS2_PIN 12
