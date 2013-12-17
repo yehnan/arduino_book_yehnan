@@ -1,16 +1,17 @@
 #include <IRremote.h>
 #define SERIAL_BAUDRATE 19200
-// IRremote needs specific pin to send IR signals
-// Uno uses 3, Leonardo uses 13, more in IRremoteInt.h
+// 因為IRremote內部設定的關係，板子不同，
+// IR LED也必須接到不同的腳位，Uno是3，Leonardo是13，
+// 其他請查詢IRremote的IRremoteInt.h
 IRsend irsend;
 void setup() {
   Serial.begin(SERIAL_BAUDRATE);
 }
 void loop() {
   byte d;
-  if( (d = Serial.read()) != -1) {
+  if( (d = Serial.read()) != -1) { // 讀取序列埠
     unsigned long v = 0x0;
-    switch(d){
+    switch(d){ // 對應出紅外線指令碼
       case '1':
         v = 0x77E14050;
       break;
@@ -36,7 +37,8 @@ void loop() {
       Serial.print(d);
       Serial.print(", IR send ");
       Serial.println(v, HEX);
-      irsend.sendNEC(v, 32);
+      irsend.sendNEC(v, 32); // 送出符合NEC協定的指令碼
     }
   }
 }
+

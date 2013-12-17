@@ -1,7 +1,7 @@
 #include <IRremote.h>
 #define SERIAL_BAUDRATE 19200
-#define IR_RECEIVER_PIN 9
-#define BUZZER_PIN 3
+#define IR_RECEIVER_PIN 9 // 紅外線接收器
+#define BUZZER_PIN 3 // 蜂鳴器
 
 IRrecv irrecv(IR_RECEIVER_PIN);
 decode_results results;
@@ -30,11 +30,13 @@ void setup() {
 #define NOTE_D6  1175
 #define NOTE_DS6 1245
 
+// 定義結構，存放紅外線指令碼與音符頻率的對應關係
 typedef struct{
   unsigned long irValue;
   int note;
 } IRValueNote;
 
+// 本例使用九個按鍵與九個音符
 #define DATA_NUMBER 9
 IRValueNote data[DATA_NUMBER] = {
   {0xFF00FF, NOTE_C5},
@@ -57,6 +59,7 @@ void loop() {
     Serial.print(" bits, decode_type is ");
     Serial.println(results.decode_type);
     int n = NOTE_;
+    // 根據解碼後的指令碼，到資料裡找出對應的音符頻率
     for(int i = 0; i < DATA_NUMBER; i++){
       if(data[i].irValue == results.value){
         n = data[i].note;
@@ -64,7 +67,7 @@ void loop() {
       }
     }
     if(n != NOTE_)
-      tone(BUZZER_PIN, n, 3000 / 8);
+      tone(BUZZER_PIN, n, 3000 / 8); // 發聲
 
     irrecv.resume();
   }
