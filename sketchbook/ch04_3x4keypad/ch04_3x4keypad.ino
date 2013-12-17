@@ -10,6 +10,7 @@
 #define COL 3 // 3直欄
 #define ROW 4 // 4橫列
 
+// 使用結構儲存Arduino腳位與矩陣鍵盤針腳的連接關係
 typedef struct{
   int arduinoPin;
   char keypadPin;
@@ -29,7 +30,9 @@ void loop() {
     for(int j = 0; j < COL+ROW; j++){
       if(pins[j].arduinoPin != pins[i].arduinoPin){
         pinMode(pins[j].arduinoPin, INPUT_PULLUP); // 啟用內建的上拉電阻
-        if(digitalRead(pins[j].arduinoPin) == LOW){ // 若某鍵被按下，其狀態會是LOW
+        
+        // 若某鍵被按下，其狀態會是LOW
+        if(digitalRead(pins[j].arduinoPin) == LOW){
           Serial.print(pins[i].keypadPin); // 輸出是哪兩個針腳的交叉處
           Serial.print(" and ");
           Serial.println(pins[j].keypadPin);
