@@ -9,4 +9,3 @@ void play(int *melody, int *noteDurations, int num){
   }
 }
 
-

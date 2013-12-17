@@ -11,8 +11,8 @@
 #define BUZZER_PIN 11
 #define DS18B20_PIN 12
 
-#define TEMPERATURE_HIGH_LIMIT 38 // Celsius
-#define TEMPERATURE_LOW_LIMIT 10 // Celsius
+#define TEMPERATURE_HIGH_LIMIT 38 // 攝氏Celsius
+#define TEMPERATURE_LOW_LIMIT 10 // 攝氏Celsius
 
 #define NOTE_C5  523 // Do
 #define NOTE_CS5 554
@@ -56,7 +56,7 @@ void alarmHandler(uint8_t *){
   }
 }
 
-byte smileFace[8] = {
+byte smileFace[8] = { // 笑臉
   B00000,
   B10001,
   B00000,
@@ -65,7 +65,7 @@ byte smileFace[8] = {
   B01110,
   B00000,
 };
-byte cryFace[8] = {
+byte cryFace[8] = { // 哭臉
   B00000,
   B10001,
   B00000,
@@ -74,7 +74,7 @@ byte cryFace[8] = {
   B01110,
   B10001,
 };
-byte degreeCircle[8] = {
+byte degreeCircle[8] = { // 代表「度」的小圈圈
   B00010,
   B00101,
   B00010,
@@ -103,9 +103,10 @@ void setup(void)
     tSensors.getAddress(a, i);
     pf("Device index %d, address 0x %02x %02x %02x %02x %02x %02x %02x %02x\n", 
       i, a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7]);
+    // 設定溫度上下限
     tSensors.setHighAlarmTemp(a, TEMPERATURE_HIGH_LIMIT);
     tSensors.setLowAlarmTemp(a, TEMPERATURE_LOW_LIMIT);
-    tSensors.setAlarmHandler(alarmHandler);
+    tSensors.setAlarmHandler(alarmHandler); // 設定警告處理函式
   }
 }
 
