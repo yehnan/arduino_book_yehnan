@@ -1,7 +1,8 @@
 arduino_book_yehnan
 ===================
 
-「Arduino入門」書裡的程式原始碼與電路圖檔案。
+「Arduino輕鬆入門：範例分析與實作設計」書裡的程式原始碼與電路圖檔案。
+博碩文化出版。
 
 sketchbook目錄：就是Arduino的草稿碼簿目錄（sketchbook），裡頭每一個子目錄都代表一個Arduino草稿碼（sketch），除了原始碼檔案，還有電路圖（Fritzing格式與PNG匯出圖檔）與相關檔案。子目錄libraries則是額外加裝的Arduino程式庫。
 
