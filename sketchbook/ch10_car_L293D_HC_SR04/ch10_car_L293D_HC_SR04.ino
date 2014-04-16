@@ -13,7 +13,7 @@
 
 // 輪子馬達的兩極所連接的腳位定義
 // 假定當電流從FORWARD流向BACKWARD，輪子往前轉，車子往前走
-// 假定當電流從BACKWARD流向FORWARD，輪子往前轉，車子往後退
+// 假定當電流從BACKWARD流向FORWARD，輪子往後轉，車子往後退
 #define MOTOR_RIGHT E34_PIN
 #define MOTOR_RIGHT_FORWARD Y3_PIN
 #define MOTOR_RIGHT_BACKWARD Y4_PIN
