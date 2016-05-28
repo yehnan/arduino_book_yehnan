@@ -1,9 +1,11 @@
-#include <IRremote.h>
 #define SERIAL_BAUDRATE 19200
+
+#include <IRremote.h>
 // 因為IRremote內部設定的關係，板子不同，
 // IR LED也必須接到不同的腳位，Uno是3，Leonardo是13，
 // 其他請查詢IRremote的IRremoteInt.h
 IRsend irsend;
+
 void setup() {
   Serial.begin(SERIAL_BAUDRATE);
 }
